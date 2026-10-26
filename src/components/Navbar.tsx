@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import type { PageRoute } from '../types';
 import { Menu, X } from 'lucide-react';
-import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface NavbarProps {
   currentRoute: PageRoute;
@@ -9,7 +8,7 @@ interface NavbarProps {
   onOpenLeadModal: (serviceName?: string) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onRouteChange, onOpenLeadModal }) => {
+export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onRouteChange }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleNavClick = (sectionId: string) => {
@@ -38,21 +37,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onRouteChange, onO
               onRouteChange('home');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="flex items-center gap-3 group"
+            className="flex items-center group py-2"
           >
             <img
               src="/logo.png"
               alt="Logo Las páginas de Dani"
-              className="h-10 w-auto object-contain"
+              className="h-12 w-auto object-contain"
             />
-            <div className="text-left">
-              <span className="text-lg font-black tracking-tight font-display text-slate-900 block leading-tight">
-                Las páginas de <span className="text-[#FF5E14]">Dani</span>
-              </span>
-              <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider block">
-                Webs en 24h &bull; Colombia
-              </span>
-            </div>
           </a>
 
           <nav className="hidden md:flex items-center gap-7 text-xs font-semibold text-slate-600">
@@ -88,16 +79,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onRouteChange, onO
               Preguntas
             </button>
           </nav>
-
-          <div className="hidden md:flex items-center gap-4">
-            <button
-              onClick={() => onOpenLeadModal('Contacto Directo')}
-              className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-2.5 rounded-lg font-bold text-xs transition-all shadow-md active:scale-95 cursor-pointer"
-            >
-              <WhatsAppIcon className="w-4 h-4 fill-white" />
-              <span>Pedir por WhatsApp</span>
-            </button>
-          </div>
 
           <div className="flex md:hidden">
             <button
@@ -145,18 +126,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentRoute, onRouteChange, onO
           >
             Preguntas
           </button>
-          <div className="pt-2">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenLeadModal('Contacto Directo Móvil');
-              }}
-              className="w-full flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 rounded-lg font-bold text-xs"
-            >
-              <WhatsAppIcon className="w-4 h-4 fill-white" />
-              <span>Pedir por WhatsApp (24h)</span>
-            </button>
-          </div>
         </div>
       )}
     </header>

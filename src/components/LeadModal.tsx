@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { PageRoute } from '../types';
 import { logConsentAudit } from '../services/auditLogger';
 import { X, ShieldCheck, AlertCircle } from 'lucide-react';
@@ -14,6 +14,13 @@ interface LeadModalProps {
   onRouteChange: (route: PageRoute) => void;
 }
 
+const PLAN_OPTIONS = [
+  { id: 'Plan 1', label: 'Plan 1: Landing Page ($550.000 + $55.000/mes)' },
+  { id: 'Plan 2', label: 'Plan 2: Landing Animada ($750.000 + $75.000/mes)' },
+  { id: 'Plan 3', label: 'Plan 3: Web con Catálogo ($950.000 + $95.000/mes)' },
+  { id: 'Plan 4', label: 'Plan 4: Web Pro con Funciones Extra ($1.250.000 + $125.000/mes)' },
+];
+
 export const LeadModal: React.FC<LeadModalProps> = ({
   isOpen,
   onClose,
@@ -21,11 +28,32 @@ export const LeadModal: React.FC<LeadModalProps> = ({
   defaultMessage,
   onRouteChange
 }) => {
+  const [selectedPlan, setSelectedPlan] = useState<string>('Plan 1');
   const [clientName, setClientName] = useState('');
   const [clientPhone, setClientPhone] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Sincronizar el plan pre-seleccionado según el servicio elegido
+  useEffect(() => {
+    if (!serviceName) {
+      setSelectedPlan('Plan 1');
+      return;
+    }
+    const lower = serviceName.toLowerCase();
+    if (lower.includes('plan 1') || lower.includes('landing page') && !lower.includes('animad')) {
+      setSelectedPlan('Plan 1');
+    } else if (lower.includes('plan 2') || lower.includes('animad')) {
+      setSelectedPlan('Plan 2');
+    } else if (lower.includes('plan 3') || lower.includes('catálogo') || lower.includes('catalogo')) {
+      setSelectedPlan('Plan 3');
+    } else if (lower.includes('plan 4') || lower.includes('pro')) {
+      setSelectedPlan('Plan 4');
+    } else {
+      setSelectedPlan('Plan 1');
+    }
+  }, [serviceName]);
 
   if (!isOpen) return null;
 
@@ -53,7 +81,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({
       method: 'LeadModal_Form_Submit',
       clientName: clientName.trim(),
       clientPhone: clientPhone.trim(),
-      serviceSelected: serviceName || 'General',
+      serviceSelected: selectedPlan,
     });
 
     try {
@@ -68,7 +96,9 @@ export const LeadModal: React.FC<LeadModalProps> = ({
 
     toast.success('Abriendo WhatsApp...');
 
-    const baseText = defaultMessage || `Hola Dani, soy ${clientName.trim()}. Mi número es ${clientPhone.trim()} y me interesa el plan: ${serviceName}.`;
+    const baseText = defaultMessage
+      ? `${defaultMessage} (Selección: ${selectedPlan})`
+      : `Hola Dani, soy ${clientName.trim()}. Mi número es ${clientPhone.trim()} y quiero contratar el ${selectedPlan}.`;
     const encoded = encodeURIComponent(baseText);
     const waUrl = `https://wa.me/573000000000?text=${encoded}`;
 
@@ -97,10 +127,10 @@ export const LeadModal: React.FC<LeadModalProps> = ({
           </div>
           <div>
             <h3 className="text-lg font-bold font-display text-slate-900">
-              Contacto por WhatsApp
+              Pedir página web
             </h3>
             <p className="text-xs text-slate-500">
-              Plan: <strong className="text-slate-800">{serviceName || 'General'}</strong>
+              Respuesta directa en WhatsApp
             </p>
           </div>
         </div>
@@ -112,7 +142,25 @@ export const LeadModal: React.FC<LeadModalProps> = ({
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-3.5 text-left">
+        <form onSubmit={handleSubmit} className="space-y-3 text-left">
+          {/* Desplegable para elegir el plan */}
+          <div>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">
+              Selecciona el plan *
+            </label>
+            <select
+              value={selectedPlan}
+              onChange={(e) => setSelectedPlan(e.target.value)}
+              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#25D366] text-xs font-medium text-slate-900 bg-white"
+            >
+              {PLAN_OPTIONS.map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">
               Nombre o Empresa *
@@ -205,7 +253,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({
               className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-all cursor-pointer"
             >
               <WhatsAppIcon className="w-4 h-4 fill-white" />
-              <span>Abrir WhatsApp con Dani</span>
+              <span>Pedir por WhatsApp</span>
             </button>
           </div>
 
