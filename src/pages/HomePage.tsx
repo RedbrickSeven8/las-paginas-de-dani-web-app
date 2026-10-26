@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import type { PricingPlan, PortfolioItem } from '../types';
 import { AnimateIn } from '../components/AnimateIn';
+import { HeroAnimation } from '../components/HeroAnimation';
 import { Clock, ShieldCheck, ArrowRight, Smartphone } from 'lucide-react';
 import { WhatsAppIcon } from '../components/WhatsAppIcon';
 
@@ -43,7 +44,7 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
-            <div className="lg:col-span-7 space-y-5">
+            <div className="lg:col-span-6 space-y-5">
               <AnimateIn direction="down" delay={100}>
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-bold tracking-wide">
                   <span className="text-[#FF5E14]">ENTREGA EN 24 HORAS</span>
@@ -104,33 +105,10 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
               </AnimateIn>
             </div>
 
-            <div className="lg:col-span-5">
+            {/* Right Column: Hero Sequential Animation replaces the specifications card */}
+            <div className="lg:col-span-6">
               <AnimateIn direction="left" delay={300}>
-                <div className="bg-slate-900 text-white rounded-2xl p-6 border border-slate-800 space-y-4 shadow-xl">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-800 text-xs font-mono text-emerald-400">
-                    <span>ESTADO: ACTIVO</span>
-                    <span>TIEMPO: 24 HORAS</span>
-                  </div>
-
-                  <div className="space-y-2.5 text-xs sm:text-sm">
-                    <div className="p-3 rounded-lg bg-slate-800/80 flex justify-between">
-                      <span className="text-slate-400">Entrega:</span>
-                      <span className="text-white font-bold">1 Día</span>
-                    </div>
-                    <div className="p-3 rounded-lg bg-slate-800/80 flex justify-between">
-                      <span className="text-slate-400">Tarjetas NFC:</span>
-                      <span className="text-white font-bold">Incluidas con QR</span>
-                    </div>
-                    <div className="p-3 rounded-lg bg-slate-800/80 flex justify-between">
-                      <span className="text-slate-400">Mensualidad:</span>
-                      <span className="text-white font-bold">Mantenimiento y hosting</span>
-                    </div>
-                    <div className="p-3 rounded-lg bg-slate-800/80 flex justify-between">
-                      <span className="text-slate-400">Desde:</span>
-                      <span className="text-[#FF5E14] font-black">$550.000 COP</span>
-                    </div>
-                  </div>
-                </div>
+                <HeroAnimation />
               </AnimateIn>
             </div>
 
