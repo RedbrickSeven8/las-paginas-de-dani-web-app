@@ -1,6 +1,6 @@
 import React from 'react';
 import type { PageRoute } from '../types';
-import { Zap, MessageCircle } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface FooterProps {
   onRouteChange: (route: PageRoute) => void;
@@ -12,13 +12,15 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange, onOpenLeadModal }
     <footer className="bg-slate-950 text-white border-t border-slate-800 text-left">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-[#FF5E14] flex items-center justify-center text-white">
-                <Zap className="w-4 h-4" />
-              </div>
+              <img
+                src="/logo.png"
+                alt="Logo Las páginas de Dani"
+                className="h-8 w-auto object-contain"
+              />
               <span className="text-lg font-bold font-display text-white">
                 Las páginas de Dani
               </span>
@@ -85,7 +87,7 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange, onOpenLeadModal }
                   }}
                   className="hover:text-[#FF5E14]"
                 >
-                  Portafolio
+                  Páginas entregadas
                 </a>
               </li>
               <li>
@@ -140,9 +142,9 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange, onOpenLeadModal }
               <button
                 type="button"
                 onClick={() => onOpenLeadModal('Footer')}
-                className="inline-flex items-center gap-1.5 bg-[#FF5E14] hover:bg-[#E04E0B] text-white text-xs font-bold px-3 py-2 rounded-lg cursor-pointer"
+                className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold px-3.5 py-2 rounded-lg cursor-pointer shadow-md"
               >
-                <MessageCircle className="w-3.5 h-3.5" />
+                <WhatsAppIcon className="w-3.5 h-3.5 fill-white" />
                 <span>Pedir por WhatsApp</span>
               </button>
             </div>

@@ -11,7 +11,7 @@ import { PrivacyPage, TermsPage, CookiesPage } from './pages/LegalPages';
 import { ThankYouPage } from './pages/ThankYouPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { Toaster } from 'sonner';
-import { MessageCircle } from 'lucide-react';
+import { WhatsAppIcon } from './components/WhatsAppIcon';
 
 export const App: React.FC = () => {
   const [currentRoute, setCurrentRoute] = useState<PageRoute>('home');
@@ -24,11 +24,11 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     const titles: Record<PageRoute, string> = {
-      home: 'Las páginas de Dani | Páginas Web Disruptivas en 24 Horas & Tarjetas NFC',
+      home: 'Las páginas de Dani | Páginas Web en 24 Horas & Tarjetas NFC',
       privacy: 'Política de Privacidad | Las páginas de Dani',
       terms: 'Términos y Condiciones del Servicio | Las páginas de Dani',
       cookies: 'Política de Cookies | Las páginas de Dani',
-      'thank-you': '¡Gracias por tu Solicitud! | Las páginas de Dani',
+      'thank-you': 'Solicitud Recibida | Las páginas de Dani',
       '404': 'Página No Encontrada (404) | Las páginas de Dani'
     };
     document.title = titles[currentRoute] || 'Las páginas de Dani';
@@ -76,6 +76,7 @@ export const App: React.FC = () => {
         onOpenLeadModal={handleOpenLeadModal}
       />
 
+      {/* Floating WhatsApp Quick Action Button */}
       <aside aria-label="Contacto Rápido" className="fixed bottom-6 right-6 z-40">
         <button
           type="button"
@@ -83,8 +84,8 @@ export const App: React.FC = () => {
           className="bg-[#25D366] hover:bg-[#20bd5a] text-white p-3.5 sm:px-5 sm:py-3.5 rounded-full shadow-2xl flex items-center gap-2.5 font-bold text-sm hover:scale-105 active:scale-95 transition-all cursor-pointer group"
           aria-label="Contactar por WhatsApp"
         >
-          <MessageCircle className="w-6 h-6 fill-white" />
-          <span className="hidden sm:inline">¿Hablamos por WhatsApp?</span>
+          <WhatsAppIcon className="w-6 h-6 fill-white" />
+          <span className="hidden sm:inline">WhatsApp</span>
         </button>
       </aside>
 

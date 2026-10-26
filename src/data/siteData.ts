@@ -97,6 +97,15 @@ export const getInitialPlans = (): PricingPlan[] => [
 
 export const getInitialPortfolio = (): PortfolioItem[] => [
   {
+    name: 'Impacto Burger',
+    clientType: 'Restaurante',
+    deliveryTime: '24 horas',
+    url: 'https://impactoburger.surge.sh',
+    description: 'Menú digital para mesas con tarjetas NFC y escaneo QR.',
+    tags: ['Menú Digital', 'NFC y QR'],
+    accentColor: '#F59E0B'
+  },
+  {
     name: 'NexPlay Colombia',
     clientType: 'Videojuegos y Tecnología',
     deliveryTime: '24 horas',
@@ -113,15 +122,6 @@ export const getInitialPortfolio = (): PortfolioItem[] => [
     description: 'Listado de inmuebles con filtros y contacto con asesores.',
     tags: ['Inmuebles', 'Filtros'],
     accentColor: '#0EA5E9'
-  },
-  {
-    name: 'Impacto Burger',
-    clientType: 'Restaurante',
-    deliveryTime: '24 horas',
-    url: 'https://impactoburger.surge.sh',
-    description: 'Menú digital para mesas con tarjetas NFC y escaneo QR.',
-    tags: ['Menú Digital', 'NFC y QR'],
-    accentColor: '#F59E0B'
   }
 ];
 

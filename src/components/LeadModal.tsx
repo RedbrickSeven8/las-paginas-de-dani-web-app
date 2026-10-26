@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import type { PageRoute } from '../types';
 import { logConsentAudit } from '../services/auditLogger';
-import { X, Send, CheckCircle2, ShieldCheck, AlertCircle } from 'lucide-react';
+import { X, ShieldCheck, AlertCircle } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
 
@@ -32,21 +33,20 @@ export const LeadModal: React.FC<LeadModalProps> = ({
     e.preventDefault();
 
     if (!clientName.trim()) {
-      setErrorMsg('Por favor ingresa tu nombre o el de tu negocio.');
+      setErrorMsg('Ingresa tu nombre o empresa.');
       return;
     }
 
     if (!clientPhone.trim() || clientPhone.replace(/\D/g, '').length < 7) {
-      setErrorMsg('Por favor ingresa un número de WhatsApp válido.');
+      setErrorMsg('Ingresa un número de WhatsApp válido.');
       return;
     }
 
     if (!termsAccepted || !privacyAccepted) {
-      setErrorMsg('Debes aceptar independientemente los Términos y la Política de Privacidad.');
+      setErrorMsg('Acepta los Términos y la Política de Privacidad.');
       return;
     }
 
-    // Registrar auditoría técnica obligatoria (estrictamente interno)
     logConsentAudit({
       termsAccepted: true,
       privacyAccepted: true,
@@ -58,17 +58,17 @@ export const LeadModal: React.FC<LeadModalProps> = ({
 
     try {
       confetti({
-        particleCount: 60,
-        spread: 70,
+        particleCount: 50,
+        spread: 60,
         origin: { y: 0.6 }
       });
     } catch {
-      // ignore
+      // non-blocking
     }
 
-    toast.success('¡Datos validados! Redirigiendo a WhatsApp...');
+    toast.success('Abriendo WhatsApp...');
 
-    const baseText = defaultMessage || `Hola Dani, mi nombre es ${clientName.trim()}. Me interesa cotizar el servicio: ${serviceName}. Mi número de contacto es ${clientPhone.trim()}.`;
+    const baseText = defaultMessage || `Hola Dani, soy ${clientName.trim()}. Mi número es ${clientPhone.trim()} y me interesa el plan: ${serviceName}.`;
     const encoded = encodeURIComponent(baseText);
     const waUrl = `https://wa.me/573000000000?text=${encoded}`;
 
@@ -76,12 +76,12 @@ export const LeadModal: React.FC<LeadModalProps> = ({
       window.open(waUrl, '_blank', 'noopener,noreferrer');
       onClose();
       onRouteChange('thank-you');
-    }, 700);
+    }, 600);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in">
-      <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative text-left">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs">
+      <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 relative text-left">
         
         <button
           onClick={onClose}
@@ -91,35 +91,31 @@ export const LeadModal: React.FC<LeadModalProps> = ({
           <X className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-xl bg-orange-100 text-[#FF5E14] flex items-center justify-center font-bold">
-            <CheckCircle2 className="w-5 h-5" />
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+            <WhatsAppIcon className="w-5 h-5 fill-[#25D366]" />
           </div>
           <div>
-            <h3 className="text-xl font-bold font-display text-slate-900">
-              Cotiza en WhatsApp en 24h
+            <h3 className="text-lg font-bold font-display text-slate-900">
+              Contacto por WhatsApp
             </h3>
             <p className="text-xs text-slate-500">
-              Servicio seleccionado: <strong className="text-slate-800">{serviceName || 'Plan Personalizado'}</strong>
+              Plan: <strong className="text-slate-800">{serviceName || 'General'}</strong>
             </p>
           </div>
         </div>
 
-        <p className="text-xs text-slate-600 mt-2 mb-6">
-          Ingresa tus datos para conectarte directamente con Dani sin intermediarios y preparar tu propuesta.
-        </p>
-
         {errorMsg && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-xs text-red-700">
+          <div className="mb-4 p-2.5 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-xs text-red-700">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{errorMsg}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-left">
+        <form onSubmit={handleSubmit} className="space-y-3.5 text-left">
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Nombre o Nombre de tu Empresa <span className="text-red-500">*</span>
+              Nombre o Empresa *
             </label>
             <input
               type="text"
@@ -129,14 +125,14 @@ export const LeadModal: React.FC<LeadModalProps> = ({
                 setClientName(e.target.value);
                 if (errorMsg) setErrorMsg('');
               }}
-              placeholder="Ej. Carlos Mendoza / Restaurante El Sabor"
-              className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#FF5E14] text-sm"
+              placeholder="Ej. Juan Pérez"
+              className="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#25D366] text-xs"
             />
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Número de WhatsApp <span className="text-red-500">*</span>
+              WhatsApp *
             </label>
             <input
               type="tel"
@@ -146,13 +142,13 @@ export const LeadModal: React.FC<LeadModalProps> = ({
                 setClientPhone(e.target.value);
                 if (errorMsg) setErrorMsg('');
               }}
-              placeholder="Ej. 312 345 6789"
-              className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#FF5E14] text-sm"
+              placeholder="Ej. 300 123 4567"
+              className="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#25D366] text-xs"
             />
           </div>
 
-          <div className="pt-2 space-y-2.5 border-t border-slate-100">
-            <label className="flex items-start gap-2.5 cursor-pointer text-xs text-slate-600">
+          <div className="pt-2 space-y-2 border-t border-slate-100 text-xs text-slate-600">
+            <label className="flex items-start gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={termsAccepted}
@@ -160,25 +156,24 @@ export const LeadModal: React.FC<LeadModalProps> = ({
                   setTermsAccepted(e.target.checked);
                   if (errorMsg) setErrorMsg('');
                 }}
-                className="mt-0.5 rounded border-slate-300 text-[#FF5E14] focus:ring-[#FF5E14]"
+                className="mt-0.5 rounded border-slate-300 text-[#25D366] focus:ring-[#25D366]"
               />
               <span>
-                Acepto expresamente los{' '}
+                Acepto los{' '}
                 <button
                   type="button"
                   onClick={() => {
                     onClose();
                     onRouteChange('terms');
                   }}
-                  className="text-[#FF5E14] hover:underline font-medium"
+                  className="text-slate-900 underline font-semibold"
                 >
                   Términos y Condiciones
-                </button>{' '}
-                del servicio gestionado en Colombia.
+                </button>.
               </span>
             </label>
 
-            <label className="flex items-start gap-2.5 cursor-pointer text-xs text-slate-600">
+            <label className="flex items-start gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={privacyAccepted}
@@ -186,7 +181,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({
                   setPrivacyAccepted(e.target.checked);
                   if (errorMsg) setErrorMsg('');
                 }}
-                className="mt-0.5 rounded border-slate-300 text-[#FF5E14] focus:ring-[#FF5E14]"
+                className="mt-0.5 rounded border-slate-300 text-[#25D366] focus:ring-[#25D366]"
               />
               <span>
                 Acepto la{' '}
@@ -196,28 +191,27 @@ export const LeadModal: React.FC<LeadModalProps> = ({
                     onClose();
                     onRouteChange('privacy');
                   }}
-                  className="text-[#FF5E14] hover:underline font-medium"
+                  className="text-slate-900 underline font-semibold"
                 >
                   Política de Privacidad
-                </button>{' '}
-                y tratamiento de datos por parte de "las paginas de dani".
+                </button>.
               </span>
             </label>
           </div>
 
-          <div className="pt-3">
+          <div className="pt-2">
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-[#FF5E14] hover:bg-[#E04E0B] text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-orange-500/25 transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-all cursor-pointer"
             >
-              <Send className="w-4 h-4" />
-              <span>Abrir Chat en WhatsApp con Dani</span>
+              <WhatsAppIcon className="w-4 h-4 fill-white" />
+              <span>Abrir WhatsApp con Dani</span>
             </button>
           </div>
 
-          <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400 text-center">
+          <div className="flex items-center justify-center gap-1 text-[10px] text-slate-400">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Tus datos están protegidos. Respuesta en menos de 15 minutos.</span>
+            <span>Datos protegidos por "las paginas de dani".</span>
           </div>
         </form>
 

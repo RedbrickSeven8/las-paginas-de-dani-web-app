@@ -1,6 +1,7 @@
 import React from 'react';
 import type { PricingPlan } from '../types';
-import { Check, X, ArrowRight } from 'lucide-react';
+import { Check, X } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface PricingSectionProps {
   plans: PricingPlan[];
@@ -100,12 +101,12 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ plans, onSelectP
                   onClick={() => onSelectPlan(plan)}
                   className={`w-full py-2.5 px-3 rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                     isHighlighted
-                      ? 'bg-[#FF5E14] hover:bg-[#E04E0B] text-white'
+                      ? 'bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-md'
                       : 'bg-slate-900 hover:bg-slate-800 text-white'
                   }`}
                 >
-                  <span>Elegir Plan {plan.number}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <WhatsAppIcon className="w-3.5 h-3.5 fill-white" />
+                  <span>Pedir Plan {plan.number}</span>
                 </button>
 
               </div>

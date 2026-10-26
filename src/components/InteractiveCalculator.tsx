@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Check, ArrowRight } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 
 interface InteractiveCalculatorProps {
   onSelectCalculatedPlan: (details: {
@@ -12,9 +13,9 @@ interface InteractiveCalculatorProps {
 
 export const InteractiveCalculator: React.FC<InteractiveCalculatorProps> = ({ onSelectCalculatedPlan }) => {
   const [selectedPlanTier, setSelectedPlanTier] = useState<number>(3);
-  const [extraNfcCards, setExtraNfcCards] = useState<number>(2);
-  const [includeCopywriting, setIncludeCopywriting] = useState<boolean>(false);
-  const [includeCustomDomainSearch, setIncludeCustomDomainSearch] = useState<boolean>(false);
+  const [extraNfcCards, setExtraNfcCards] = useState<number>(0);
+  const [includeCopywriting, setIncludeCopywriting] = useState<boolean>(true);
+  const [includeCustomDomainSearch, setIncludeCustomDomainSearch] = useState<boolean>(true);
 
   const tierConfigs: Record<number, { name: string; setup: number; monthly: number; description: string }> = {
     1: { name: 'Plan 1: Landing', setup: 550000, monthly: 55000, description: 'One-page informativa' },
@@ -25,10 +26,11 @@ export const InteractiveCalculator: React.FC<InteractiveCalculatorProps> = ({ on
 
   const currentTier = tierConfigs[selectedPlanTier];
   const nfcCardUnitPrice = 35000;
-  const copywritingAddon = includeCopywriting ? 80000 : 0;
-  const domainAddon = includeCustomDomainSearch ? 45000 : 0;
+  const nfcCardsCost = extraNfcCards * nfcCardUnitPrice;
+  const copywritingAddon = 0;
+  const domainAddon = 0;
 
-  const totalSetup = currentTier.setup + (extraNfcCards * nfcCardUnitPrice) + copywritingAddon + domainAddon;
+  const totalSetup = currentTier.setup + nfcCardsCost + (includeCopywriting ? copywritingAddon : 0) + (includeCustomDomainSearch ? domainAddon : 0);
   const totalMonthly = currentTier.monthly;
 
   const formatCOP = (num: number) => {
@@ -101,7 +103,7 @@ export const InteractiveCalculator: React.FC<InteractiveCalculatorProps> = ({ on
             <div className="pt-4 border-t border-slate-700">
               <div className="flex justify-between text-xs font-bold text-slate-300 mb-2">
                 <span>2. Tarjetas NFC adicionales: +{extraNfcCards}</span>
-                <span className="text-[#FF5E14]">+{formatCOP(extraNfcCards * nfcCardUnitPrice)}</span>
+                <span className="text-[#FF5E14]">+{formatCOP(nfcCardsCost)}</span>
               </div>
               <input
                 type="range"
@@ -132,8 +134,9 @@ export const InteractiveCalculator: React.FC<InteractiveCalculatorProps> = ({ on
                     onChange={(e) => setIncludeCopywriting(e.target.checked)}
                     className="text-[#FF5E14] rounded"
                   />
-                  <span>Redacción de textos (+{formatCOP(80000)})</span>
+                  <span>Redacción de textos (+{formatCOP(0)})</span>
                 </div>
+                <span className="text-emerald-400 font-bold">$0</span>
               </label>
 
               <label className="flex items-center justify-between p-3 rounded-lg border border-slate-700 bg-slate-800/40 cursor-pointer text-xs">
@@ -144,8 +147,9 @@ export const InteractiveCalculator: React.FC<InteractiveCalculatorProps> = ({ on
                     onChange={(e) => setIncludeCustomDomainSearch(e.target.checked)}
                     className="text-[#FF5E14] rounded"
                   />
-                  <span>Gestión de dominio (+{formatCOP(45000)})</span>
+                  <span>Gestión de dominio (+{formatCOP(0)})</span>
                 </div>
+                <span className="text-emerald-400 font-bold">$0</span>
               </label>
             </div>
           </div>
@@ -153,9 +157,36 @@ export const InteractiveCalculator: React.FC<InteractiveCalculatorProps> = ({ on
           <div className="lg:col-span-5 bg-slate-800 rounded-xl p-6 border border-slate-700 space-y-4">
             <h3 className="text-sm font-bold uppercase text-slate-400">Total a pagar</h3>
             
+            {/* Desglose de lo seleccionado encima del total a pagar */}
+            <div className="p-4 rounded-lg bg-slate-900/60 border border-slate-700 text-xs space-y-2 text-slate-300">
+              <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                Desglose de selección:
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400">{currentTier.name}:</span>
+                <span className="font-semibold text-white">{formatCOP(currentTier.setup)}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400">Tarjetas NFC extras ({extraNfcCards}):</span>
+                <span className="font-semibold text-white">+{formatCOP(nfcCardsCost)}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400">Redacción de textos:</span>
+                <span className="font-semibold text-emerald-400">{includeCopywriting ? 'Incluida ($0)' : 'No'}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-400">Gestión de dominio:</span>
+                <span className="font-semibold text-emerald-400">{includeCustomDomainSearch ? 'Incluida ($0)' : 'No'}</span>
+              </div>
+              <div className="flex justify-between items-center pt-2 border-t border-slate-800">
+                <span className="text-slate-400">Mensualidad por 1 año:</span>
+                <span className="font-bold text-[#FF5E14]">{formatCOP(totalMonthly)}/mes</span>
+              </div>
+            </div>
+
             <div className="p-4 rounded-lg bg-slate-900 border border-slate-700 space-y-2">
               <div className="flex justify-between items-baseline">
-                <span className="text-xs text-slate-400">Pago inicial:</span>
+                <span className="text-xs text-slate-400">Pago inicial total:</span>
                 <span className="text-2xl font-black text-white">{formatCOP(totalSetup)}</span>
               </div>
               <div className="flex justify-between items-baseline pt-2 border-t border-slate-800">
@@ -167,9 +198,10 @@ export const InteractiveCalculator: React.FC<InteractiveCalculatorProps> = ({ on
             <button
               type="button"
               onClick={handleProceed}
-              className="w-full flex items-center justify-center gap-2 bg-[#FF5E14] hover:bg-[#E04E0B] text-white py-3 rounded-lg font-bold text-xs transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-lg font-bold text-xs transition-all cursor-pointer"
             >
-              <span>Continuar con esta cotización</span>
+              <WhatsAppIcon className="w-4 h-4 fill-white" />
+              <span>Pedir por WhatsApp</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
