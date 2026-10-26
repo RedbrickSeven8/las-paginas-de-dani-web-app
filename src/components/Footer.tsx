@@ -1,6 +1,6 @@
 import React from 'react';
 import type { PageRoute } from '../types';
-import { Zap, MessageCircle, Shield, Clock } from 'lucide-react';
+import { Zap, MessageCircle } from 'lucide-react';
 
 interface FooterProps {
   onRouteChange: (route: PageRoute) => void;
@@ -10,48 +10,43 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onRouteChange, onOpenLeadModal }) => {
   return (
     <footer className="bg-slate-950 text-white border-t border-slate-800 text-left">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
-          <div className="lg:col-span-5 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-[#FF5E14] flex items-center justify-center p-2 text-white">
-                <Zap className="w-5 h-5" />
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-lg bg-[#FF5E14] flex items-center justify-center text-white">
+                <Zap className="w-4 h-4" />
               </div>
-              <span className="text-xl font-black font-display tracking-tight text-white">
+              <span className="text-lg font-bold font-display text-white">
                 Las páginas de Dani
               </span>
             </div>
             
-            <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
-              Diseño y desarrollo web en 24 horas con tarjeta NFC inteligente física incluida. Modelo de suscripción todo incluido pensado para pequeñas y medianas empresas en Colombia.
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Páginas web en 24 horas y tarjetas NFC. Modelo por suscripción mensual.
             </p>
 
-            <div className="text-xs text-slate-500 space-y-1 pt-2">
-              <p><strong>Responsable de la web:</strong> "las paginas de dani"</p>
-              <p>Bogotá, Medellín y cobertura en toda Colombia.</p>
+            <div className="text-xs text-slate-500">
+              Responsable: "las paginas de dani" &bull; Colombia
             </div>
           </div>
 
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-              Navegación Rápida
-            </h4>
-            <ul className="space-y-2 text-sm text-slate-400">
+          <div className="space-y-2">
+            <div className="text-xs font-bold uppercase text-slate-400">Navegación</div>
+            <ul className="space-y-1.5 text-xs text-slate-300">
               <li>
                 <a
                   href="#servicios"
                   onClick={(e) => {
                     e.preventDefault();
                     onRouteChange('home');
-                    setTimeout(() => {
-                      document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 50);
+                    setTimeout(() => document.getElementById('servicios')?.scrollIntoView({ behavior: 'smooth' }), 50);
                   }}
-                  className="hover:text-[#FF5E14] transition-colors"
+                  className="hover:text-[#FF5E14]"
                 >
-                  Planes y Precios (4 Niveles)
+                  Planes y Precios
                 </a>
               </li>
               <li>
@@ -60,13 +55,11 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange, onOpenLeadModal }
                   onClick={(e) => {
                     e.preventDefault();
                     onRouteChange('home');
-                    setTimeout(() => {
-                      document.getElementById('calculadora')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 50);
+                    setTimeout(() => document.getElementById('calculadora')?.scrollIntoView({ behavior: 'smooth' }), 50);
                   }}
-                  className="hover:text-[#FF5E14] transition-colors"
+                  className="hover:text-[#FF5E14]"
                 >
-                  Cotizador Interactivo en Vivo
+                  Calculadora
                 </a>
               </li>
               <li>
@@ -75,13 +68,11 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange, onOpenLeadModal }
                   onClick={(e) => {
                     e.preventDefault();
                     onRouteChange('home');
-                    setTimeout(() => {
-                      document.getElementById('nfc-demo')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 50);
+                    setTimeout(() => document.getElementById('nfc-demo')?.scrollIntoView({ behavior: 'smooth' }), 50);
                   }}
-                  className="hover:text-[#FF5E14] transition-colors"
+                  className="hover:text-[#FF5E14]"
                 >
-                  Tarjetas NFC Inteligentes
+                  Tarjetas NFC
                 </a>
               </li>
               <li>
@@ -90,13 +81,11 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange, onOpenLeadModal }
                   onClick={(e) => {
                     e.preventDefault();
                     onRouteChange('home');
-                    setTimeout(() => {
-                      document.getElementById('testimonios')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 50);
+                    setTimeout(() => document.getElementById('testimonios')?.scrollIntoView({ behavior: 'smooth' }), 50);
                   }}
-                  className="hover:text-[#FF5E14] transition-colors"
+                  className="hover:text-[#FF5E14]"
                 >
-                  Portafolio y Clientes Reales
+                  Portafolio
                 </a>
               </li>
               <li>
@@ -105,28 +94,24 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange, onOpenLeadModal }
                   onClick={(e) => {
                     e.preventDefault();
                     onRouteChange('home');
-                    setTimeout(() => {
-                      document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 50);
+                    setTimeout(() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' }), 50);
                   }}
-                  className="hover:text-[#FF5E14] transition-colors"
+                  className="hover:text-[#FF5E14]"
                 >
-                  Preguntas Frecuentes
+                  Preguntas frecuentes
                 </a>
               </li>
             </ul>
           </div>
 
-          <div className="lg:col-span-4 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-              Legalidad y Transparencia
-            </h4>
-            <ul className="space-y-2 text-sm text-slate-400">
+          <div className="space-y-2">
+            <div className="text-xs font-bold uppercase text-slate-400">Legal</div>
+            <ul className="space-y-1.5 text-xs text-slate-300">
               <li>
                 <button
                   type="button"
                   onClick={() => onRouteChange('privacy')}
-                  className="hover:text-[#FF5E14] transition-colors cursor-pointer text-left"
+                  className="hover:text-[#FF5E14] cursor-pointer"
                 >
                   Política de Privacidad
                 </button>
@@ -135,36 +120,18 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange, onOpenLeadModal }
                 <button
                   type="button"
                   onClick={() => onRouteChange('terms')}
-                  className="hover:text-[#FF5E14] transition-colors cursor-pointer text-left"
+                  className="hover:text-[#FF5E14] cursor-pointer"
                 >
-                  Términos y Condiciones del Servicio
+                  Términos y Condiciones
                 </button>
               </li>
               <li>
                 <button
                   type="button"
                   onClick={() => onRouteChange('cookies')}
-                  className="hover:text-[#FF5E14] transition-colors cursor-pointer text-left"
+                  className="hover:text-[#FF5E14] cursor-pointer"
                 >
                   Política de Cookies
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => onRouteChange('thank-you')}
-                  className="hover:text-[#FF5E14] transition-colors cursor-pointer text-left"
-                >
-                  Página de Agradecimiento
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={() => onRouteChange('404')}
-                  className="hover:text-[#FF5E14] transition-colors cursor-pointer text-left"
-                >
-                  Página 404 de Demostración
                 </button>
               </li>
             </ul>
@@ -172,29 +139,20 @@ export const Footer: React.FC<FooterProps> = ({ onRouteChange, onOpenLeadModal }
             <div className="pt-2">
               <button
                 type="button"
-                onClick={() => onOpenLeadModal('Contacto Footer')}
-                className="inline-flex items-center gap-2 bg-[#FF5E14] hover:bg-[#E04E0B] text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-all shadow-md cursor-pointer"
+                onClick={() => onOpenLeadModal('Footer')}
+                className="inline-flex items-center gap-1.5 bg-[#FF5E14] hover:bg-[#E04E0B] text-white text-xs font-bold px-3 py-2 rounded-lg cursor-pointer"
               >
-                <MessageCircle className="w-4 h-4" />
-                <span>Hablar con Dani en WhatsApp</span>
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span>Pedir por WhatsApp</span>
               </button>
             </div>
           </div>
 
         </div>
 
-        <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© {new Date().getFullYear()} "las paginas de dani". Todos los derechos reservados.</p>
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Garantía de Entrega en 24h</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <Shield className="w-3.5 h-3.5 text-[#FF5E14]" />
-              <span>Hosting & Mantenimiento Asegurado</span>
-            </span>
-          </div>
+        <div className="mt-8 pt-6 border-t border-slate-800 text-[11px] text-slate-500 flex justify-between items-center">
+          <span>© {new Date().getFullYear()} "las paginas de dani"</span>
+          <span>Entrega en 24 horas</span>
         </div>
 
       </div>
