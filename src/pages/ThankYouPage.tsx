@@ -45,7 +45,7 @@ export const ThankYouPage: React.FC<ThankYouPageProps> = ({ onRouteChange }) => 
         </button>
 
         <a
-          href="https://wa.me/573000000000"
+          href="https://wa.me/573058921629"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white px-5 py-3 rounded-lg font-bold text-xs cursor-pointer shadow-md"

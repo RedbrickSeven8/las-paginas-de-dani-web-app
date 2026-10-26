@@ -100,7 +100,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({
       ? `${defaultMessage} (Selección: ${selectedPlan})`
       : `Hola Dani, soy ${clientName.trim()}. Mi número es ${clientPhone.trim()} y quiero contratar el ${selectedPlan}.`;
     const encoded = encodeURIComponent(baseText);
-    const waUrl = `https://wa.me/573000000000?text=${encoded}`;
+    const waUrl = `https://wa.me/573058921629?text=${encoded}`;
 
     setTimeout(() => {
       window.open(waUrl, '_blank', 'noopener,noreferrer');
