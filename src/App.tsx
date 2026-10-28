@@ -5,6 +5,7 @@ import { Navbar } from './components/Navbar';
 import { Breadcrumbs } from './components/Breadcrumbs';
 import { LeadModal } from './components/LeadModal';
 import { CookieBanner } from './components/CookieBanner';
+import { ScrollToTop } from './components/ScrollToTop';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
 import { PrivacyPage, TermsPage, CookiesPage } from './pages/LegalPages';
@@ -42,7 +43,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-[#0F172A] selection:bg-[#FF5E14] selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-[#0F172A] selection:bg-[#FF5E14] selection:text-white relative">
       <Toaster position="top-right" richColors />
 
       <Navbar
@@ -75,6 +76,9 @@ export const App: React.FC = () => {
         onRouteChange={setCurrentRoute}
         onOpenLeadModal={handleOpenLeadModal}
       />
+
+      {/* Botón flotante para Volver Arriba (Ubicado abajo a la derecha) */}
+      <ScrollToTop />
 
       {/* Floating WhatsApp Quick Action Button */}
       <aside aria-label="Contacto Rápido" className="fixed bottom-6 right-6 z-40">

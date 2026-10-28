@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import type { PricingPlan, PortfolioItem } from '../types';
 import { AnimateIn } from '../components/AnimateIn';
 import { HeroAnimation } from '../components/HeroAnimation';
-import { ArrowRight, Globe, CheckCircle2, Zap, Sparkles } from 'lucide-react';
+import { ArrowRight, Globe, CheckCircle2, Zap, Sparkles, AlertTriangle } from 'lucide-react';
 import { WhatsAppIcon } from '../components/WhatsAppIcon';
 
 const PricingSection = lazy(() =>
@@ -46,7 +46,7 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
             <div className="lg:col-span-6 space-y-5">
               <AnimateIn direction="down" delay={100}>
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold tracking-wide">
-                  <span className="text-[#FF5E14]">¿SIN PÁGINA WEB EN TU COMERCIO?</span>
+                  <span className="text-[#FF5E14]">¿TU NEGOCIO AÚN NO TIENE WEB?</span>
                   <span className="text-slate-400">&bull;</span>
                   <span>Lista en 24 Horas</span>
                 </div>
@@ -54,13 +54,13 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
 
               <AnimateIn direction="up" delay={200}>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black font-display tracking-tight text-slate-950 leading-[1.08]">
-                  Pasamos tu negocio de no tener página web a vender por internet en 24 horas.
+                  Si tu negocio no está en internet, tus clientes le están comprando a la competencia.
                 </h1>
               </AnimateIn>
 
               <AnimateIn direction="up" delay={300}>
                 <p className="text-slate-600 text-base sm:text-lg max-w-xl leading-relaxed">
-                  Si tu comercio o empresa aún no tiene sitio web, lo creamos desde cero. Incluye diseño, hosting, dominio profesional, mantenimiento mensual y <strong>tarjeta inteligente NFC con QR</strong> para tu local.
+                  Pensar que "no necesitas página web" te cuesta ventas todos los días. Te entregamos un sitio web profesional listo en 24 horas con hosting, dominio, soporte y <strong>tarjeta inteligente NFC con QR</strong> para tu local.
                 </p>
               </AnimateIn>
 
@@ -69,11 +69,11 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
                 <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                   <button
                     type="button"
-                    onClick={() => onOpenLeadModal('Hero CTA Principal', 'Hola Dani, mi comercio no tiene página web y quiero tenerla en 24 horas.')}
+                    onClick={() => onOpenLeadModal('Hero CTA Principal', 'Hola Dani, mi comercio no tiene página web y quiero dejar de perder ventas.')}
                     className="inline-flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white px-8 py-4 rounded-xl font-black text-base shadow-lg shadow-emerald-500/20 active:scale-95 transition-all cursor-pointer"
                   >
                     <WhatsAppIcon className="w-5 h-5 fill-white" />
-                    <span>Pedir mi Web por WhatsApp</span>
+                    <span>Digitalizar mi Negocio Hoy</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
 
@@ -90,7 +90,7 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
                 <div className="pt-2 grid grid-cols-3 gap-2 border-t border-slate-200/80 text-[11px] font-semibold text-slate-600">
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>Sin enredos técnicos</span>
+                    <span>Cero enredos técnicos</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -120,14 +120,15 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
       <section className="py-14 bg-white border-y border-slate-200 text-left">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-10">
-            <span className="text-xs font-bold text-[#FF5E14] uppercase tracking-widest">
-              Digitalización Ágil para Comercios
+            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-red-600 bg-red-50 border border-red-200 px-3 py-1 rounded-full uppercase tracking-wider mb-2">
+              <AlertTriangle className="w-3.5 h-3.5 text-red-500" />
+              El riesgo de no tener presencia web
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold font-display text-slate-950 mt-1">
-              ¿Por qué seguir sin sitio web si tus clientes ya te buscan en internet?
+              "No necesito web"... el error más costoso de un comercio hoy
             </h2>
             <p className="text-slate-600 text-sm mt-3">
-              Diseñamos la solución perfecta para negocios locales que no tienen presencia web pero quieren captar clientes todos los días.
+              Hoy más del 85% de los clientes buscan un negocio en Google o escanean un QR antes de comprar. Si no te encuentran, eligen al negocio de al lado.
             </p>
           </div>
 
@@ -139,10 +140,10 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
                     <Globe className="w-5 h-5" />
                   </div>
                   <h3 className="text-base font-bold text-slate-900 font-display mb-2">
-                    Visibilidad en Google y Redes
+                    Gana la Credibilidad que te Falta
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Cuando un cliente busca tu producto o servicio en su celular, te encontrará con una web limpia, veloz y lista para llamarte.
+                    Un negocio con sitio web transmite confianza inmediata. Tus clientes verifican tus productos, precios y ubicación en segundos sin dudar.
                   </p>
                 </div>
               </div>
@@ -155,10 +156,10 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
                     <Zap className="w-5 h-5" />
                   </div>
                   <h3 className="text-base font-bold text-slate-900 font-display mb-2">
-                    Entrega Garantizada en 24h
+                    Ventas Directas a tu WhatsApp
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Olvídate de agencias que tardan meses. En 24 horas tu sitio web estará al aire recibiendo prospectos en tu WhatsApp.
+                    Tu página web funciona como un vendedor activo 24/7 que le muestra tu catálogo a los clientes y te envía las cotizaciones armadas a tu WhatsApp.
                   </p>
                 </div>
               </div>
@@ -171,10 +172,10 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
                     <Sparkles className="w-5 h-5" />
                   </div>
                   <h3 className="text-base font-bold text-slate-900 font-display mb-2">
-                    Tarjeta NFC Física Incluida
+                    Tarjeta NFC Física de Regalo
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
-                    Tus clientes acercan su teléfono a la tarjeta NFC o escanean el QR impreso para ver tu web, catálogo o dejar reseñas en Google.
+                    Tus clientes acercan su teléfono a la tarjeta NFC o escanean el QR en tu local para ver tu web, catálogo o dejar reseñas positivas en Google.
                   </p>
                 </div>
               </div>
@@ -285,10 +286,10 @@ export const HomePage: React.FC<HomePageProps> = ({ plans, portfolio, onOpenLead
         <div className="max-w-2xl mx-auto px-4 space-y-4">
           <AnimateIn direction="up">
             <h2 className="text-2xl sm:text-4xl font-black font-display text-white">
-              Pasa de no tener página web a recibir clientes mañana
+              No dejes que tu competencia se quede con tus clientes
             </h2>
             <p className="text-slate-400 text-sm mt-2">
-              Escríbenos por WhatsApp y te asesoramos para iniciar hoy mismo.
+              Escríbenos por WhatsApp y te asesoramos para lanzar tu web en 24 horas.
             </p>
             <div className="pt-4">
               <button
