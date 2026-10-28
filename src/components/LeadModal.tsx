@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import type { PageRoute } from '../types';
 import { logConsentAudit } from '../services/auditLogger';
-import { X, ShieldCheck, AlertCircle } from 'lucide-react';
+import { X, ShieldCheck, AlertCircle, Mail, Send } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
@@ -34,8 +34,8 @@ export const LeadModal: React.FC<LeadModalProps> = ({
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Sincronizar el plan pre-seleccionado según el servicio elegido
   useEffect(() => {
     if (!serviceName) {
       setSelectedPlan('Plan 1');
@@ -57,11 +57,31 @@ export const LeadModal: React.FC<LeadModalProps> = ({
 
   if (!isOpen) return null;
 
+  const sendEmailNotification = async (name: string, phone: string, plan: string, msg: string) => {
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('phone', phone);
+      formData.append('plan', plan);
+      formData.append('message', msg);
+      formData.append('_subject', `Nuevo Prospecto (Sin Página Web): ${name} - ${plan}`);
+      formData.append('_captcha', 'false');
+
+      await fetch('https://formsubmit.co/laspaginasdedani@gmail.com', {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+      });
+    } catch {
+      // Notificación asíncrona no bloqueante
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!clientName.trim()) {
-      setErrorMsg('Ingresa tu nombre o empresa.');
+      setErrorMsg('Ingresa tu nombre o el de tu negocio/comercio.');
       return;
     }
 
@@ -71,9 +91,11 @@ export const LeadModal: React.FC<LeadModalProps> = ({
     }
 
     if (!termsAccepted || !privacyAccepted) {
-      setErrorMsg('Acepta los Términos y la Política de Privacidad.');
+      setErrorMsg('Debes aceptar los Términos y la Política de Privacidad.');
       return;
     }
+
+    setIsSubmitting(true);
 
     logConsentAudit({
       termsAccepted: true,
@@ -83,6 +105,17 @@ export const LeadModal: React.FC<LeadModalProps> = ({
       clientPhone: clientPhone.trim(),
       serviceSelected: selectedPlan,
     });
+
+    const baseText = defaultMessage
+      ? `${defaultMessage} (Selección: ${selectedPlan})`
+      : `Hola Dani, no tengo página web en mi comercio/negocio. Soy ${clientName.trim()}, mi número es ${clientPhone.trim()} y quiero información para contratar el ${selectedPlan}.`;
+
+    sendEmailNotification(
+      clientName.trim(),
+      clientPhone.trim(),
+      selectedPlan,
+      baseText
+    );
 
     try {
       confetti({
@@ -94,16 +127,14 @@ export const LeadModal: React.FC<LeadModalProps> = ({
       // non-blocking
     }
 
-    toast.success('Abriendo WhatsApp...');
+    toast.success('Notificación enviada a laspaginasdedani@gmail.com. Abriendo WhatsApp...');
 
-    const baseText = defaultMessage
-      ? `${defaultMessage} (Selección: ${selectedPlan})`
-      : `Hola Dani, soy ${clientName.trim()}. Mi número es ${clientPhone.trim()} y quiero contratar el ${selectedPlan}.`;
     const encoded = encodeURIComponent(baseText);
     const waUrl = `https://wa.me/573058921629?text=${encoded}`;
 
     setTimeout(() => {
       window.open(waUrl, '_blank', 'noopener,noreferrer');
+      setIsSubmitting(false);
       onClose();
       onRouteChange('thank-you');
     }, 600);
@@ -115,43 +146,42 @@ export const LeadModal: React.FC<LeadModalProps> = ({
         
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100"
+          className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 cursor-pointer"
           aria-label="Cerrar modal"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
-            <WhatsAppIcon className="w-5 h-5 fill-[#25D366]" />
+          <div className="p-2 bg-emerald-100 text-[#25D366] rounded-xl shrink-0">
+            <WhatsAppIcon className="w-6 h-6 fill-[#25D366]" />
           </div>
           <div>
-            <h3 className="text-lg font-bold font-display text-slate-900">
-              Pedir página web
+            <h3 className="text-base font-extrabold text-slate-900 font-display">
+              Digitaliza tu Comercio Hoy
             </h3>
             <p className="text-xs text-slate-500">
-              Respuesta directa en WhatsApp
+              Obtén tu sitio web listo en 24 horas y contacto directo a WhatsApp
             </p>
           </div>
         </div>
 
         {errorMsg && (
-          <div className="mb-4 p-2.5 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2 text-xs text-red-700">
-            <AlertCircle className="w-4 h-4 shrink-0" />
+          <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 flex items-center gap-2 text-xs text-red-700">
+            <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
             <span>{errorMsg}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-3 text-left">
-          {/* Desplegable para elegir el plan */}
+        <form onSubmit={handleSubmit} className="space-y-3.5">
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Selecciona el plan *
+              Plan o Servicio de Interés
             </label>
             <select
               value={selectedPlan}
               onChange={(e) => setSelectedPlan(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#25D366] text-xs font-medium text-slate-900 bg-white"
+              className="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#25D366] text-xs font-medium text-slate-900 bg-white"
             >
               {PLAN_OPTIONS.map((opt) => (
                 <option key={opt.id} value={opt.id}>
@@ -163,7 +193,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({
 
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Nombre o Empresa *
+              Nombre o Nombre de tu Comercio / Empresa *
             </label>
             <input
               type="text"
@@ -173,14 +203,14 @@ export const LeadModal: React.FC<LeadModalProps> = ({
                 setClientName(e.target.value);
                 if (errorMsg) setErrorMsg('');
               }}
-              placeholder="Ej. Juan Pérez"
+              placeholder="Ej. Pedro Gómez - Tienda Don Pedro"
               className="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#25D366] text-xs"
             />
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">
-              WhatsApp *
+              Número de WhatsApp de Contacto *
             </label>
             <input
               type="tel"
@@ -250,11 +280,18 @@ export const LeadModal: React.FC<LeadModalProps> = ({
           <div className="pt-2">
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-all cursor-pointer"
+              disabled={isSubmitting}
+              className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-all cursor-pointer disabled:opacity-75"
             >
               <WhatsAppIcon className="w-4 h-4 fill-white" />
-              <span>Pedir por WhatsApp</span>
+              <span>{isSubmitting ? 'Enviando...' : 'Pedir por WhatsApp'}</span>
+              <Send className="w-3.5 h-3.5 ml-1" />
             </button>
+          </div>
+
+          <div className="flex items-center justify-center gap-1.5 text-[10px] text-slate-500 pt-1">
+            <Mail className="w-3 h-3 text-[#FF5E14]" />
+            <span>Copia de confirmación enviada a laspaginasdedani@gmail.com</span>
           </div>
 
           <div className="flex items-center justify-center gap-1 text-[10px] text-slate-400">

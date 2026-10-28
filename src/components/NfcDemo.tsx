@@ -8,18 +8,31 @@ export const NfcDemo: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center text-left">
           
           <div className="lg:col-span-6 space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-bold uppercase">
+              <span>Módulo Físico para tu Comercio</span>
+            </div>
+
             <h2 className="text-2xl sm:text-3xl font-extrabold font-display text-slate-900">
-              Tarjetas NFC con QR
+              Tarjetas Inteligentes NFC con Código QR
             </h2>
 
             <p className="text-slate-600 text-sm leading-relaxed">
-              Cada plan incluye tarjetas físicas. Al acercar el teléfono o escanear el código QR, abre tu página web o la ficha de reseñas de Google.
+              Cada plan incluye tarjetas físicas inteligentes. Ideal para comercios y empresarios que no tenían página web: al acercar el teléfono o escanear el código QR impreso, tus clientes abren al instante tu página web, catálogo o ficha de reseñas en Google.
             </p>
 
             <ul className="space-y-2 text-xs text-slate-700">
-              <li>&bull; Funciona en Android y iPhone sin instalar aplicaciones.</li>
-              <li>&bull; Chip NFC al contacto y código QR impreso.</li>
-              <li>&bull; Uso para menús de restaurantes o reseñas de clientes.</li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5E14]"></span>
+                <span>Funciona en Android e iPhone de forma nativa sin instalar aplicaciones.</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5E14]"></span>
+                <span>Chip NFC de alto alcance al contacto + Código QR de respaldo impreso.</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF5E14]"></span>
+                <span>Perfecto para mostradores de locales, cartas digitales o intercambio de contacto.</span>
+              </li>
             </ul>
           </div>
 
