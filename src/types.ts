@@ -11,6 +11,7 @@ export interface ConsentRecord {
   clientName?: string;
   clientPhone?: string;
   serviceSelected?: string;
+  notes?: string;
 }
 
 export interface PricingPlan {

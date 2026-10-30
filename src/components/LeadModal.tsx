@@ -31,6 +31,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({
   const [selectedPlan, setSelectedPlan] = useState<string>('Plan 1');
   const [clientName, setClientName] = useState('');
   const [clientPhone, setClientPhone] = useState('');
+  const [additionalNotes, setAdditionalNotes] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -57,23 +58,29 @@ export const LeadModal: React.FC<LeadModalProps> = ({
 
   if (!isOpen) return null;
 
-  const sendEmailNotification = async (name: string, phone: string, plan: string, msg: string) => {
+  const sendEmailNotification = async (name: string, phone: string, plan: string, notes: string, msg: string) => {
     try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('phone', phone);
-      formData.append('plan', plan);
-      formData.append('message', msg);
-      formData.append('_subject', `Nuevo Prospecto (Sin Página Web): ${name} - ${plan}`);
-      formData.append('_captcha', 'false');
+      const payload = {
+        name,
+        phone,
+        plan,
+        indicaciones_adicionales: notes.trim() || 'Sin indicaciones adicionales',
+        mensaje_completo: msg,
+        _subject: `Nuevo Prospecto Web: ${name} - ${plan}`,
+        _captcha: 'false',
+        _template: 'table'
+      };
 
-      await fetch('https://formsubmit.co/laspaginasdedani@gmail.com', {
+      await fetch('https://formsubmit.co/ajax/laspaginasdedani@gmail.com', {
         method: 'POST',
-        body: formData,
-        mode: 'no-cors'
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
       });
     } catch {
-      // Notificación asíncrona no bloqueante
+      // Envío asíncrono no bloqueante
     }
   };
 
@@ -97,6 +104,8 @@ export const LeadModal: React.FC<LeadModalProps> = ({
 
     setIsSubmitting(true);
 
+    const trimmedNotes = additionalNotes.trim();
+
     logConsentAudit({
       termsAccepted: true,
       privacyAccepted: true,
@@ -104,16 +113,20 @@ export const LeadModal: React.FC<LeadModalProps> = ({
       clientName: clientName.trim(),
       clientPhone: clientPhone.trim(),
       serviceSelected: selectedPlan,
+      notes: trimmedNotes || undefined,
     });
 
+    const notesSnippet = trimmedNotes ? `\n\nIndicaciones adicionales: ${trimmedNotes}` : '';
+
     const baseText = defaultMessage
-      ? `${defaultMessage} (Selección: ${selectedPlan})`
-      : `Hola Dani, no tengo página web en mi comercio/negocio. Soy ${clientName.trim()}, mi número es ${clientPhone.trim()} y quiero información para contratar el ${selectedPlan}.`;
+      ? `${defaultMessage} (Selección: ${selectedPlan})${notesSnippet}`
+      : `Hola Dani, no tengo página web en mi comercio/negocio. Soy ${clientName.trim()}, mi número es ${clientPhone.trim()} y quiero información para contratar el ${selectedPlan}.${notesSnippet}`;
 
     sendEmailNotification(
       clientName.trim(),
       clientPhone.trim(),
       selectedPlan,
+      trimmedNotes,
       baseText
     );
 
@@ -222,6 +235,22 @@ export const LeadModal: React.FC<LeadModalProps> = ({
               }}
               placeholder="Ej. 300 123 4567"
               className="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#25D366] text-xs"
+            />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-semibold text-slate-700">
+                Mensaje o indicaciones adicionales
+              </label>
+              <span className="text-[10px] text-slate-400 font-normal">Opcional</span>
+            </div>
+            <textarea
+              rows={2}
+              value={additionalNotes}
+              onChange={(e) => setAdditionalNotes(e.target.value)}
+              placeholder="Ej. Mi negocio es una pastelería en Bogotá, requiero botón para pedidos..."
+              className="w-full px-3.5 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#25D366] text-xs resize-none placeholder:text-slate-400"
             />
           </div>
 
